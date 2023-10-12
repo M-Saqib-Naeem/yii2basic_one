@@ -48,7 +48,8 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'entry' => 'product/entry',
-                'user/new' => 'user/create',
+                'register' => 'user/create',
+                'login' => 'user/login',
             ],
         ],
         

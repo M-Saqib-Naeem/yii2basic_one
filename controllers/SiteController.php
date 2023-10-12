@@ -20,10 +20,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout'],
+                'only' => [ 'index', 'logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -61,6 +61,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        // echo "<pre style='margin-top: 200px;'>";
+        // print_r( Yii::$app->user );
+        // echo "</pre>";
         return $this->render('index');
     }
 

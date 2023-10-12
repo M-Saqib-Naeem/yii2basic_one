@@ -3,7 +3,8 @@
 namespace app\models;
 
 use Yii;
-
+use \yii\db\ActiveRecord;
+use \yii\web\IdentityInterface;
 /**
  * This is the model class for table "{{%users}}".
  *
@@ -12,7 +13,7 @@ use Yii;
  * @property string $email_address
  * @property string $password
  */
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -23,7 +24,7 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdoc
      */
     public function rules()
     {
@@ -52,23 +53,80 @@ class User extends \yii\db\ActiveRecord
          * parent::beforeSave($insert) means save method called
          * else update method called
          */
-        if ( parent::beforeSave($insert) ) {
+        if ( parent::beforeSave($insert) ) 
+        {
+            if( $this->isNewRecord ) {
 
-            $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+                $user = static::findOne( ['email_address' => $this->email_address] );
+
+                if( ! is_null( $user ) ) {
+                    return Yii::$app->session->setFlash('error', 'User already exist.');
+                }
+
+                $this->password = $this->passwordEncryption( $this->password );
+            }
 
             return true;
         }
-        // return true;
+        return false;
     }
 
-    public function fields()
+    /**
+     * adterSave event triggeres immidiately after a record
+     * is saved to the database. So we use the returned
+     * ActiveRecord to login the user.
+     */
+    public function afterSave($insert, $changedAttributes)
     {
-        return [
-    
-            // field name is "name", its value is defined by a PHP callback
-            'password' => function () {
-                return Yii::$app->getSecurity()->generatePasswordHash($this->password);
-            },
-        ];
+        parent::afterSave($insert, $changedAttributes);
+        
+        if ($insert) {
+
+            return Yii::$app->user->login($this);
+        } 
+    }
+
+    public static function findIdentity( $id ) 
+    {
+        return static::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null) {}
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getAuthKey()
+    {
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    public function login( )
+    {
+
+        $user = static::findOne( ['email_address' => $this->email_address] );
+        
+        if( is_null( $user ) ) 
+        {
+            return Yii::$app->session->setFlash('userAccountErrors', 'User not found.');
+            
+        }
+
+        if( ! Yii::$app->getSecurity()->validatePassword($this->password, $user->password) )
+        {
+            return Yii::$app->session->setFlash('userAccountErrors', 'Invalid User.');
+        }
+        Yii::$app->user->login($user);
+    }   
+
+    private function passwordEncryption( $password )
+    {
+        return Yii::$app->getSecurity()->generatePasswordHash($password);
     }
 }
