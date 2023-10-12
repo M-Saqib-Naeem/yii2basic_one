@@ -47,11 +47,19 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'entry' => 'product/entry',
+                'user/new' => 'user/create',
             ],
         ],
         
     ],
     'params' => $params,
+
+    // Application level Action
+    // 'on beforeAction' => function() {
+    //     echo "<p style='margin-top:100px;'>Application Action <br/></p>";
+    // }
+
 ];
 
 if (YII_ENV_DEV) {
@@ -67,7 +75,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 
