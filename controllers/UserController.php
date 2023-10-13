@@ -12,8 +12,6 @@ class UserController extends \yii\web\Controller
      * Handles the application login functionality
      */
     public function actionLogin() {
-        
-
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -21,7 +19,9 @@ class UserController extends \yii\web\Controller
         $user = new User();
 
         if ($user->load(Yii::$app->request->post()) && $user->login()) {
-            return $this->goHome();
+            // return $this->renderAjax('site/index');
+
+            // return $this->redirect('site/index');
         }
         return $this->render('login', ['user' => $user]);    
     }
@@ -41,7 +41,7 @@ class UserController extends \yii\web\Controller
                 return $this->redirect('register');
             }
             Yii::$app->session->setFlash('success', 'User created successfully!');
-            return $this->goBack();
+            return $this->redirect('site/index');
         }
 
         return $this->render('create', [

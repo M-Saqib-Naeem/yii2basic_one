@@ -81,8 +81,7 @@ class User extends ActiveRecord implements IdentityInterface
         parent::afterSave($insert, $changedAttributes);
         
         if ($insert) {
-
-            return Yii::$app->user->login($this);
+            Yii::$app->user->login($this);
         } 
     }
 
@@ -123,7 +122,7 @@ class User extends ActiveRecord implements IdentityInterface
             return Yii::$app->session->setFlash('userAccountErrors', 'Invalid User.');
         }
         Yii::$app->user->login($user);
-    }   
+    }
 
     private function passwordEncryption( $password )
     {

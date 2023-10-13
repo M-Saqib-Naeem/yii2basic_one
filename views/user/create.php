@@ -29,7 +29,7 @@ use yii\bootstrap5\Alert;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($user, 'first_name'); ?>
+        <?= $form->field($user, 'first_name')->textInput(['autofocus' => true]); ?>
 
         <?= $form->field($user, 'email_address')->input('email'); ?>
 

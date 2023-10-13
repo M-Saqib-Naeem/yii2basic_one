@@ -61,9 +61,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        // echo "<pre style='margin-top: 200px;'>";
-        // print_r( Yii::$app->user );
-        // echo "</pre>";
         return $this->render('index');
     }
 
@@ -127,5 +124,21 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    /**
+     * Test Component
+     */
+    public function actionComponent()
+    {
+        echo Yii::$app->CalenderComponent->add( 5, 5 );
+    }
+
+    /**
+     * Test Widget
+     */
+    public function actionContactUs() 
+    {
+        return $this->render( 'contact-us' );
     }
 }

@@ -16,6 +16,10 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'ccsTxVW-feK2zNxqj81qRr3GkSXunuYL',
         ],
+        // custom component
+        'CalenderComponent' => [
+            'class' => 'app\components\CalenderComponent'
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -50,6 +54,7 @@ $config = [
                 'entry' => 'product/entry',
                 'register' => 'user/create',
                 'login' => 'user/login',
+                'contact-us' => 'site/contact-us',
             ],
         ],
         

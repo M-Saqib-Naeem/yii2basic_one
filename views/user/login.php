@@ -20,9 +20,11 @@ use yii\bootstrap5\Alert;
         endif;
         ?>
 
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin([
+                'id' => 'login-form',
+            ]); ?>
         
-        <?= $form->field( $user, 'email_address' )->input('email');  ?>
+        <?= $form->field( $user, 'email_address' )->input('email')->textInput(['autofocus' => true]);  ?>
         <?= $form->field( $user, 'password' )->passwordInput();  ?>
         
         <div class="form-group">
