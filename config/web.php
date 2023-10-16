@@ -26,6 +26,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['user/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -55,10 +56,20 @@ $config = [
                 'register' => 'user/create',
                 'login' => 'user/login',
                 'contact-us' => 'site/contact-us',
+                
             ],
         ],
         
     ],
+    'modules' => [
+        'accounts' => [
+            'class' => 'app\modules\accounts\Module',
+        ],
+        'user' => [
+            'class' => 'app\modules\users\Module',
+        ],
+    ],
+
     'params' => $params,
 
     // Application level Action

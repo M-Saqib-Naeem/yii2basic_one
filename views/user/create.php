@@ -29,9 +29,22 @@ use yii\bootstrap5\Alert;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($user, 'first_name')->textInput(['autofocus' => true]); ?>
+        <?= $form->field($user, 'full_name')->textInput(['autofocus' => true]); ?>
 
         <?= $form->field($user, 'email_address')->input('email'); ?>
+        
+        <?= $form->field($user, 'gender')->radioList([
+            '1' => 'Male',
+            '0' => 'Female',
+        ]); ?>
+
+        <?php
+        $age = [];
+        for( $i = 18; $i <= 45; $i++ ){
+            $age[$i] = $i;
+        }
+        ?>
+        <?= $form->field($user, 'age')->dropDownList( $age, ['text' => 'Please select', 'options' => ['value' => 'none', 'class' => 'prompt', 'label' => 'Select']] ); ?>
 
         <?= $form->field($user, 'password')->passwordInput(); ?>
 

@@ -9,7 +9,7 @@ use \yii\web\IdentityInterface;
  * This is the model class for table "{{%users}}".
  *
  * @property int $id
- * @property string $first_name
+ * @property string $full_name
  * @property string $email_address
  * @property string $password
  */
@@ -29,8 +29,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['first_name', 'email_address', 'password'], 'required'],
-            [['first_name', 'email_address', 'password'], 'string', 'max' => 255],
+            [['full_name', 'email_address', 'password'], 'required'],
+            [['full_name', 'email_address', 'password'], 'string', 'max' => 255],
         ];
     }
 
@@ -41,7 +41,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'first_name' => 'Full Name',
+            'full_name' => 'Full Name',
             'email_address' => 'Email Address',
             'password' => 'Password',
         ];
