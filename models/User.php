@@ -11,6 +11,9 @@ use \yii\web\IdentityInterface;
  * @property int $id
  * @property string $full_name
  * @property string $email_address
+ * @property string $email_address
+ * @property string $email_address
+ * @property string $email_address
  * @property string $password
  */
 class User extends ActiveRecord implements IdentityInterface

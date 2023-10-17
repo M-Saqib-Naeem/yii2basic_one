@@ -10,16 +10,7 @@ use app\modules\users\models\User;
  */
 class UserController extends Controller
 {
-    /**
-     * Renders the index view for the module
-     * @return string
-     */
-    public function actionIndex()
-    {
-        return $this->render('/default/index');
-    }
-
-    public function actionUsersList() {
+    public function actionIndex() {
         $users = User::find()->where(['trash' => 0])->all();
 
         return $this->render('/default/list', [

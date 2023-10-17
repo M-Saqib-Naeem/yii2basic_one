@@ -53,10 +53,11 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'entry' => 'product/entry',
-                'register' => 'user/create',
-                'login' => 'user/login',
+                'register' => 'users/register',
+                'login' => 'users/login',
                 'contact-us' => 'site/contact-us',
-                
+                'users/list' => 'users/user'
+                // 'dashboard' => 'dashboard/default'
             ],
         ],
         
@@ -65,8 +66,11 @@ $config = [
         'accounts' => [
             'class' => 'app\modules\accounts\Module',
         ],
-        'user' => [
+        'users' => [
             'class' => 'app\modules\users\Module',
+        ],
+        'dashboard' => [
+            'class' => 'app\modules\dashboard\Module',
         ],
     ],
 

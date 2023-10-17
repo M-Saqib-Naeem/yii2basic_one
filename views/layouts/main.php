@@ -15,8 +15,8 @@ AppAsset::register($this);
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
-$this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
-$this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
+// $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
+// $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
 ?>
 <?php $this->beginPage() ?>
@@ -41,13 +41,17 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
-            // ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest
-            ? ''
-            : [ 'label' => 'Profile', 'url' => ['/user/create'] ],
 
             Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/login']]
+            ? '' 
+            : ( Yii::$app->user->identity->role == 1 ? [ 'label' => 'Dashboard', 'url' => ['/dashboard'] ] : '' ),
+
+            Yii::$app->user->isGuest
+            ? ''
+            : [ 'label' => 'Profile', 'url' => ['/users/profile'] ],
+                
+            Yii::$app->user->isGuest
+                ? [ 'label' => 'Login', 'url' => [ '/login' ] ]
                 : '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
@@ -58,7 +62,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     . '</li>',
 
             Yii::$app->user->isGuest
-                ? [ 'label' => 'Register', 'url' => ['/user/create'] ]
+                ? [ 'label' => 'Register', 'url' => [ '/register' ] ]
                 : ''
         ]
     ]);

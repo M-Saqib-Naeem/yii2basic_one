@@ -1,3 +1,6 @@
+<?php
+// use Yii;
+?>
 <div class="row">
     <div class="col-12 mx-auto p-5">
         <div class="mb-3">
@@ -25,7 +28,17 @@
                             <?= ( $user->gender ) ? $user->gender : "N/A"; ?> | 
                             <?= ( $user->age ) ? $user->age : "N/A"; ?>
                         </td>
-                        <td>Delete</td>
+                        <td>
+                            <?php 
+                            if( $user->role == 1 ) {
+                                echo '/';
+                            }else{
+                            ?>
+                            <a href="#">Delete</a>
+                            <?php
+                            }
+                            ?>
+                        </td>
                     </tr>
                 <?php
                 endforeach; 
