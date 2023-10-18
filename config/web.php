@@ -3,6 +3,7 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
+
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
@@ -16,6 +17,18 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'ccsTxVW-feK2zNxqj81qRr3GkSXunuYL',
         ],
+
+        // changing the theme 
+        'view' => [
+            'theme' => [
+                'basePath' => '@app/themes/basic',
+                'baseUrl' => '@web/themes/basic',
+                'pathMap' => [
+                    '@app/views' => '@app/themes/basic',
+                ],
+            ],
+        ],
+
         // custom component
         'CalenderComponent' => [
             'class' => 'app\components\CalenderComponent'
@@ -26,7 +39,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
-            'loginUrl' => ['user/login'],
+            'loginUrl' => ['login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -56,21 +69,26 @@ $config = [
                 'register' => 'users/register',
                 'login' => 'users/login',
                 'contact-us' => 'site/contact-us',
-                'users/list' => 'users/user'
+                'users/list' => 'users/user',
+                
+                'properties/list' => 'properties/default',
+                'properties/create' => 'properties/default/create',
+                'properties/edit' => 'properties/default/edit',
+                
                 // 'dashboard' => 'dashboard/default'
             ],
         ],
         
     ],
     'modules' => [
-        'accounts' => [
-            'class' => 'app\modules\accounts\Module',
-        ],
         'users' => [
             'class' => 'app\modules\users\Module',
         ],
         'dashboard' => [
             'class' => 'app\modules\dashboard\Module',
+        ],
+        'properties' => [
+            'class' => 'app\modules\properties\Module',
         ],
     ],
 

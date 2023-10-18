@@ -36,35 +36,45 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
 
-            Yii::$app->user->isGuest
-            ? '' 
-            : ( Yii::$app->user->identity->role == 1 ? [ 'label' => 'Dashboard', 'url' => ['/dashboard'] ] : '' ),
+    $navItems = [];
+    $navItems[] = ['label' => 'Home', 'url' => ['/site/index']];
+    $navItems[] = ['label' => 'About', 'url' => ['/site/about']];
 
-            Yii::$app->user->isGuest
-            ? ''
-            : [ 'label' => 'Profile', 'url' => ['/users/profile'] ],
-                
-            Yii::$app->user->isGuest
-                ? [ 'label' => 'Login', 'url' => [ '/login' ] ]
-                : '<li class="nav-item">'
+    if( ! Yii::$app->user->isGuest ) {
+
+        if( Yii::$app->user->identity->role == 1 ) {
+            $navItems[] = [ 'label' => 'Dashboard', 'url' => ['/dashboard'] ];
+            $navItems[] = [ 'label' => 'Users', 'url' => ['/users/list'] ];
+        }
+
+        $navItems[] = [
+            'label' => 'Properties',
+            'items' => [
+                ['label' => 'View all', 'url' => ['/properties/list']],
+                ['label' => 'Add new', 'url' => ['/properties/create']],
+            ],
+        ];
+        
+        $navItems[] = [ 'label' => 'Profile', 'url' => ['/users/profile'] ];
+        $navItems[] = '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
                         'Logout (' . Yii::$app->user->identity->full_name . ')',
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()
-                    . '</li>',
+                    . '</li>';
+    }else {                
+        $navItems[] = [ 'label' => 'Login', 'url' => [ '/login' ] ];
+        $navItems[] = [ 'label' => 'Register', 'url' => [ '/register' ] ];
+    }
 
-            Yii::$app->user->isGuest
-                ? [ 'label' => 'Register', 'url' => [ '/register' ] ]
-                : ''
-        ]
+
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav'],
+        'items' => $navItems
+
     ]);
     NavBar::end();
     ?>
@@ -75,7 +85,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <?php if (!empty($this->params['breadcrumbs'])): ?>
             <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
         <?php endif ?>
-        <?php //Alert::widget() ?>
+        <?php Alert::widget() ?>
         <?= $content ?>
     </div>
 </main>
