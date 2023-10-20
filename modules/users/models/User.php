@@ -5,6 +5,7 @@ namespace app\modules\users\models;
 use Yii;
 use \yii\db\ActiveRecord;
 use \yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 /**
  * This is the model class for table "{{%users}}".
  *
@@ -18,6 +19,8 @@ use \yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $profile_image_val;
+    public $profile_image_folder = 'uploads/avatars';
     /**
      * Registering a table name
      */
@@ -34,6 +37,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['full_name', 'email_address', 'gender', 'age', 'password'], 'required'],
             [['full_name', 'email_address'], 'string', 'max' => 255],
+            [['profile_image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -45,6 +49,18 @@ class User extends ActiveRecord implements IdentityInterface
             'email_address' => 'Email Address',
             'password' => 'Password',
         ];
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+
+            $this->profile_image_val->saveAs("{$this->profile_image_folder}/{$this->profile_image_val->baseName}.{$this->profile_image_val->extension}");
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     

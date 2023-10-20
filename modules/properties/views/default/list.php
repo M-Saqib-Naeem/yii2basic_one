@@ -2,7 +2,6 @@
 use yii\helpers\BaseUrl;
 use yii\bootstrap5\Alert;
 use yii\widgets\LinkPager;
-
 ?>
 
 <div class="row">
@@ -21,6 +20,7 @@ use yii\widgets\LinkPager;
                 <a href="<?= BaseUrl::base(); ?>/properties/create" class="btn btn-primary btn-sm">Add new Property</a>
             </div>
 
+            <p><b>Total:</b> <?= $data[ 'count' ] ?> properties</p>
             <table class="table">
                 <tr>
                     <th>ID</th>
@@ -70,12 +70,25 @@ use yii\widgets\LinkPager;
             </table>
 
         </div>
+        <nav class="Page navigation example">
 
         <?php
         echo LinkPager::widget([
             'pagination' => $pagination,
+            // 'pageCssClass' => 'page-item',
+            'linkContainerOptions' => [
+                'class' => 'page-item'
+            ],
+            'linkOptions' => [
+                'class' => 'page-link'
+            ],
+            'disabledPageCssClass' => 'page-item',
+            'disabledListItemSubTagOptions' => [
+                'class' => 'page-link'
+            ]
         ]);
         ?>
+        </nav>
 
 
 

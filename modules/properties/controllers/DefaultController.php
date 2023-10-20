@@ -7,6 +7,9 @@ use yii\web\Controller;
 use app\modules\properties\models\Property;
 use Ramsey\Uuid\Uuid;
 use yii\helpers\Url;
+use yii\data\Pagination;
+// use yii\data\ActiveDataProvider;
+
 
 
 /**
@@ -19,9 +22,13 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $properties = Property::find()->all();
+        $pagination_helper = $this->pagination_helper();
         return $this->render('/default/list', [
-            'properties' => $properties
+            'properties' => $pagination_helper['properties'],
+            'pagination' => $pagination_helper['pagination'],
+            'data' => [
+                'count' => $pagination_helper['count'],
+            ]
         ]);
     }
 
@@ -32,12 +39,18 @@ class DefaultController extends Controller
 
         if( $property->load( Yii::$app->request->post() ) ) {
             $property->property_id = Uuid::uuid4()->toString();
+            $property->user_id = Yii::$app->user->identity->id;
             $property->save();
             Yii::$app->session->setFlash( 'success', 'Your property has been added successfully.' );
 
-            $properties = Property::find()->all();
+            $pagination_helper = $this->pagination_helper();
+
             return $this->render('/default/list', [
-                'properties' => $properties,
+                'properties' => $pagination_helper['properties'],
+                'pagination' => $pagination_helper['pagination'],
+                'data' => [
+                    'count' => $pagination_helper['count'],
+                ]
             ]);    
         }
         return $this->render('/default/create', [
@@ -60,4 +73,29 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * 
+     */
+    private function pagination_helper()
+    {
+        $user_id = Yii::$app->user->identity->id;
+        $role = Yii::$app->user->identity->role;
+        if( $role == 1 ) {
+            $properties = Property::find();
+        }else{
+            $properties = Property::find()->where(['user_id' => $user_id]);
+        }
+        
+        $count = $properties->count();
+        $pagination = new Pagination(['totalCount' => $count]);
+
+        $properties = $properties->offset($pagination->offset)
+        ->limit($pagination->limit)
+        ->all();
+        return [
+            'properties' =>  $properties,
+            'pagination' => $pagination,
+            'count' => $count
+        ];
+    }
 }

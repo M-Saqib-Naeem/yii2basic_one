@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\BaseUrl;
 ?>
 <div class="user-profile-update">
     <?php $form = ActiveForm::begin(); ?>
@@ -32,6 +33,16 @@ use yii\widgets\ActiveForm;
             }
             ?>
             <?= $form->field( $user, 'age')->dropDownList( $age ); ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <?= $form->field( $user, 'profile_image' )->fileInput(); ?>
+
+            <?php if( ! empty( $user->profile_image ) ): ?>
+                <img src="<?= BaseUrl::base()."/".$user->profile_image_folder."/".$user->profile_image; ?>" alt="" class="w-25 mb-5">
+            <?php endif; ?>
         </div>
     </div>
 
