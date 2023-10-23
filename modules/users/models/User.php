@@ -20,7 +20,7 @@ use yii\web\UploadedFile;
 class User extends ActiveRecord implements IdentityInterface
 {
     public $profile_image_val;
-    public $profile_image_folder = 'uploads/avatars';
+    public $dir = 'uploads/avatars';
     /**
      * Registering a table name
      */
@@ -55,7 +55,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         if ($this->validate()) {
 
-            $this->profile_image_val->saveAs("{$this->profile_image_folder}/{$this->profile_image_val->baseName}.{$this->profile_image_val->extension}");
+            $this->profile_image_val->saveAs("{$this->dir}/{$this->profile_image_val->baseName}.{$this->profile_image_val->extension}");
 
             return true;
         } else {

@@ -74,6 +74,7 @@ $config = [
                 'properties/list' => 'properties/default',
                 'properties/create' => 'properties/default/create',
                 'properties/edit' => 'properties/default/edit',
+                'properties/destroy' => 'properties/default/destroy',
                 
                 // 'dashboard' => 'dashboard/default'
             ],

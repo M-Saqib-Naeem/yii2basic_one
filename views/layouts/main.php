@@ -34,7 +34,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark ']
     ]);
 
     $navItems = [];
@@ -45,26 +45,18 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
         if( Yii::$app->user->identity->role == 1 ) {
             $navItems[] = [ 'label' => 'Dashboard', 'url' => ['/dashboard'] ];
-            $navItems[] = [ 'label' => 'Users', 'url' => ['/users/list'] ];
         }
 
-        $navItems[] = [
-            'label' => 'Properties',
-            'items' => [
-                ['label' => 'View all', 'url' => ['/properties/list']],
-                ['label' => 'Add new', 'url' => ['/properties/create']],
-            ],
-        ];
         
-        $navItems[] = [ 'label' => 'Profile', 'url' => ['/users/profile'] ];
-        $navItems[] = '<li class="nav-item">'
-                    . Html::beginForm(['/site/logout'])
-                    . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->full_name . ')',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>';
+        $navItems[] = '<li class="nav-item ms-md-auto">'
+            
+            . Html::beginForm(['/site/logout'])
+            . Html::submitButton(
+                'Logout (' . Yii::$app->user->identity->full_name . ')',
+                ['class' => 'nav-link btn btn-link logout']
+            )
+            . Html::endForm()
+            . '</li>';
     }else {                
         $navItems[] = [ 'label' => 'Login', 'url' => [ '/login' ] ];
         $navItems[] = [ 'label' => 'Register', 'url' => [ '/register' ] ];
@@ -72,7 +64,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
+        'options' => ['class' => 'navbar-nav w-100'],
         'items' => $navItems
 
     ]);

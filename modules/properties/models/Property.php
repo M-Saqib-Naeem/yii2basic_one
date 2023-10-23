@@ -25,6 +25,9 @@ use Ramsey\Uuid\Uuid;
  */
 class Property extends ActiveRecord
 {
+
+    public $property_images_val;
+    public $dir = 'uploads/properties';
     /**
      * Registering a table name
      */
@@ -41,6 +44,7 @@ class Property extends ActiveRecord
         return [
             [['name', 'type', 'description', 'price' ], 'required'],
             [['address', 'beds', 'baths', 'area', 'area_type', 'purpose'], 'string', 'min' => 1, 'max' => 255],
+            [['property_images'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 4 ]
         ];
     }
 
@@ -53,6 +57,18 @@ class Property extends ActiveRecord
             'baths' => 'Number of Bathrooms',
             'beds' => 'Number of Bedrooms',
         ];
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) { 
+            foreach ( $this->property_images_val as $file ) {
+                $file->saveAs( "{$this->dir}/{$file->baseName}.$file->extension" );
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
     
 
