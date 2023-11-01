@@ -10,6 +10,8 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
+use app\modules\properties\models\Property;
+
 class SiteController extends Controller
 {
     /**
@@ -140,5 +142,26 @@ class SiteController extends Controller
     public function actionContactUs() 
     {
         return $this->render( 'contact-us' );
+    }
+
+    public function actionProperties()
+    {
+        $properties = Property::find()->all();
+     
+        return $this->render( 'properties', [
+            'properties' => $properties
+        ] );
+    }
+
+    public function actionProperty( $id )
+    {
+        $property = Property::findOne($id);
+
+        if( is_null( $property ) )
+            throw new \yii\web\NotFoundHttpException("thii");
+     
+        return $this->render( 'property', [
+            'property' => $property
+        ] );
     }
 }

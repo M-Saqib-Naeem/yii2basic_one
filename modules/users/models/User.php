@@ -53,10 +53,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function upload()
     {
-        if ($this->validate()) {
-
+        if ( !empty( $this->profile_image_val ) && $this->validate() ) {
             $this->profile_image_val->saveAs("{$this->dir}/{$this->profile_image_val->baseName}.{$this->profile_image_val->extension}");
-
             return true;
         } else {
             return false;

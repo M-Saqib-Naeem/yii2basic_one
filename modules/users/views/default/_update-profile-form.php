@@ -38,11 +38,13 @@ use yii\helpers\BaseUrl;
 
     <div class="row">
         <div class="col-12">
+            <input type="hidden" name="User[profile_image_old]" value="<?= $user->profile_image; ?>">
             <?= $form->field( $user, 'profile_image' )->fileInput(); ?>
 
             <?php if( ! empty( $user->profile_image ) ): ?>
-                <img src="<?= BaseUrl::base()."/".$user->profile_image_folder."/".$user->profile_image; ?>" alt="" class="w-25 mb-5">
+                <img src="<?= BaseUrl::base()."/".$user->dir."/".$user->profile_image; ?>" alt="" class="w-25 mb-5">
             <?php endif; ?>
+
         </div>
     </div>
 

@@ -101,11 +101,39 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * Edit current 
+     */
     public function actionEdit( $id )
     {
         $property = Property::findOne( [ 'property_id' => $id ] );
 
-        if( $property->load( Yii::$app->request->post() ) && $property->save() ) {
+        
+        if( $property->load( Yii::$app->request->post() )  ) {
+
+            $property->property_images_val = UploadedFile::getInstances( $property, 'property_images' );
+
+            if ( ! $property->upload() ) 
+            {
+                Yii::$app->session->setFlash( 'error', 'File upload error occurred.' );
+                
+                return $this->render('/default/create', [
+                    'property' => $property,
+                    'page_title' => $this->pageTitle['create'],
+                    'button_title' => $this->btnTitle['create'],
+                ]);
+            }
+
+            $property_images = [];
+            if( is_array( $property->property_images_val ) ) {
+                foreach( $property->property_images_val as $each ) {
+                    $property_images[] = "{$each->baseName}.{$each->extension}";
+                }
+                $property->property_images = serialize( $property_images );
+            }
+
+            $property->save();
+
             Yii::$app->session->setFlash( 'success', 'Property information updated Successfully' );
         }
 
@@ -117,7 +145,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * 
+     * Pagination helper function
      */
     private function pagination_helper()
     {
@@ -147,7 +175,6 @@ class DefaultController extends Controller
     /**
      * Delete a record
      */
-
     public function actionDestroy() {
         
         if( ! Yii::$app->request->isPost ) 

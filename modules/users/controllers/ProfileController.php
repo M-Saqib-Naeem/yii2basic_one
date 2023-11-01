@@ -9,6 +9,7 @@ use yii\web\UploadedFile;
 
 class ProfileController extends Controller
 {
+    public $layout = '/backend';
 
     public function actionIndex()
     {
@@ -23,16 +24,24 @@ class ProfileController extends Controller
         if( $user->load( Yii::$app->request->post() ) )  {
 
             $user->profile_image_val = UploadedFile::getInstance($user, 'profile_image');
-            
-            if ( ! $user->upload() ) {
-                Yii::$app->session->setFlash( 'error', 'File upload error occurred.' );
-                
-                return $this->render('/default/profile', [
-                    'user' => $user
-                ]);
-            }
-            
-            $user->profile_image = "{$user->profile_image_val->baseName}.{$user->profile_image_val->extension}";
+
+            // echo gettype($user->profile_image_val);die;
+            if( $user->profile_image_val != null ) :
+                if ( ! $user->upload() ) {
+                    Yii::$app->session->setFlash( 'success', 'File upload error occurred.' );
+                    
+                    return $this->render('/default/profile', [
+                        'user' => $user
+                    ]);
+                }
+                $user->profile_image = "{$user->profile_image_val->baseName}.{$user->profile_image_val->extension}";
+            else:
+                // echo "<pre>";
+                // print_r(Yii::$app->request->post('User')['profile_image_old']);
+                // die;
+                $user->profile_image = Yii::$app->request->post('User')['profile_image_old'];
+            endif;
+
 
             $user->save();
             

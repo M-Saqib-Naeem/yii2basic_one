@@ -10,6 +10,8 @@ use app\modules\users\models\User;
  */
 class UserController extends Controller
 {
+    public $layout = '/backend';
+    
     public function actionIndex() {
         $users = User::find()->where(['trash' => 0])->all();
 
