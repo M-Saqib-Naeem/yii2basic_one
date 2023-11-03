@@ -3,6 +3,7 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
+
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
@@ -16,12 +17,29 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'ccsTxVW-feK2zNxqj81qRr3GkSXunuYL',
         ],
+
+        // changing the theme 
+        'view' => [
+            'theme' => [
+                'basePath' => '@app/themes/basic',
+                'baseUrl' => '@web/themes/basic',
+                'pathMap' => [
+                    '@app/views' => '@app/themes/basic',
+                ],
+            ],
+        ],
+
+        // custom component
+        'CalenderComponent' => [
+            'class' => 'app\components\CalenderComponent'
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -42,16 +60,46 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'entry' => 'product/entry',
+                'register' => 'users/register',
+                'login' => 'users/login',
+                'contact-us' => 'site/contact-us',
+                'users/list' => 'users/user',
+                
+                'properties/list' => 'properties/default',
+                'properties/create' => 'properties/default/create',
+                'properties/edit' => 'properties/default/edit',
+                'properties/destroy' => 'properties/default/destroy',
+                
+                // 'dashboard' => 'dashboard/default'
             ],
         ],
-        */
+        
     ],
+    'modules' => [
+        'users' => [
+            'class' => 'app\modules\users\Module',
+        ],
+        'dashboard' => [
+            'class' => 'app\modules\dashboard\Module',
+        ],
+        'properties' => [
+            'class' => 'app\modules\properties\Module',
+        ],
+    ],
+
     'params' => $params,
+
+    // Application level Action
+    // 'on beforeAction' => function() {
+    //     echo "<p style='margin-top:100px;'>Application Action <br/></p>";
+    // }
+
 ];
 
 if (YII_ENV_DEV) {
@@ -67,7 +115,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 

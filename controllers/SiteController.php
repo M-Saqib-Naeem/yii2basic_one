@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\data\Pagination;
+use app\modules\properties\models\Property;
 
 class SiteController extends Controller
 {
@@ -20,10 +22,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout'],
+                'only' => [ 'index', 'logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -124,5 +126,68 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    /**
+     * Test Component
+     */
+    public function actionComponent()
+    {
+        echo Yii::$app->CalenderComponent->add( 5, 5 );
+    }
+
+    /**
+     * Test Widget
+     */
+    public function actionContactUs() 
+    {
+        return $this->render( 'contact-us' );
+    }
+
+    public function actionProperties()
+    {
+
+        $pagination_helper = $this->pagination_helper();
+     
+        return $this->render( 'properties', [
+            'properties' => $pagination_helper['properties'],
+            'pagination' => $pagination_helper['pagination'],
+            
+        ] );
+    }
+
+    public function actionProperty( $id )
+    {
+        $property = Property::findOne($id);
+
+        if( is_null( $property ) )
+            throw new \yii\web\NotFoundHttpException("thii");
+     
+        return $this->render( 'property', [
+            'property' => $property
+        ] );
+    }
+
+
+    
+    /**
+     * Pagination helper function
+     */
+    private function pagination_helper()
+    {
+        $properties = Property::find()
+        ->where(['status' => 1 ]);
+        
+        $count = $properties->count();
+        $pagination = new Pagination(['totalCount' => $count]);
+
+        $properties = $properties->offset($pagination->offset)
+        ->limit($pagination->limit)
+        ->all();
+        return [
+            'properties' =>  $properties,
+            'pagination' => $pagination,
+            'count' => $count
+        ];
     }
 }

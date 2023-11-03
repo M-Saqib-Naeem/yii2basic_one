@@ -21,8 +21,13 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'https://unpkg.com/dropzone@5/dist/min/dropzone.min.css',
+        'css/rcrop.min.css',
     ];
     public $js = [
+        'js/rcrop.min.js',
+        'https://unpkg.com/dropzone@5/dist/min/dropzone.min.js',
+        'js/site.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

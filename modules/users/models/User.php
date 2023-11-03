@@ -1,25 +1,28 @@
 <?php
 
-namespace app\models;
+namespace app\modules\users\models;
 
 use Yii;
 use \yii\db\ActiveRecord;
 use \yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 /**
  * This is the model class for table "{{%users}}".
  *
  * @property int $id
  * @property string $full_name
  * @property string $email_address
- * @property string $email_address
- * @property string $email_address
- * @property string $email_address
+ * @property string $gender
+ * @property string $age
+ * @property string $role
  * @property string $password
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $profile_image_val;
+    public $dir = 'uploads/avatars';
     /**
-     * {@inheritdoc}
+     * Registering a table name
      */
     public static function tableName()
     {
@@ -27,19 +30,17 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc
+     * Registering the validation rules
      */
     public function rules()
     {
         return [
-            [['full_name', 'email_address', 'password'], 'required'],
-            [['full_name', 'email_address', 'password'], 'string', 'max' => 255],
+            [['full_name', 'email_address', 'gender', 'age', 'password'], 'required'],
+            [['full_name', 'email_address'], 'string', 'max' => 255],
+            [['profile_image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -50,6 +51,17 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    public function upload()
+    {
+        if ( !empty( $this->profile_image_val ) && $this->validate() ) {
+            $this->profile_image_val->saveAs("{$this->dir}/{$this->profile_image_val->baseName}.{$this->profile_image_val->extension}");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
     public function beforeSave($insert)
     {
         /**
@@ -109,9 +121,9 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getAuthKey() === $authKey;
     }
 
+    
     public function login( )
     {
-
         $user = static::findOne( ['email_address' => $this->email_address] );
         
         if( is_null( $user ) ) 
@@ -124,7 +136,7 @@ class User extends ActiveRecord implements IdentityInterface
         {
             return Yii::$app->session->setFlash('userAccountErrors', 'Invalid User.');
         }
-        Yii::$app->user->login($user);
+        return Yii::$app->user->login($user);
     }
 
     private function passwordEncryption( $password )

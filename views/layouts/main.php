@@ -9,14 +9,15 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\helpers\BaseUrl;
 
 AppAsset::register($this);
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
-$this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
-$this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
+// $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
+// $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
 ?>
 <?php $this->beginPage() ?>
@@ -34,36 +35,62 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark ']
     ]);
+
+    $navItems = [];
+    $navItems[] = ['label' => 'Home', 'url' => ['/site/index']];
+    $navItems[] = ['label' => 'About', 'url' => ['/site/about']];
+    $navItems[] = ['label' => 'Properties', 'url' => ['/site/properties']];
+
+    if( ! Yii::$app->user->isGuest ) {
+
+
+        if( Yii::$app->user->identity->role == 1 ) {
+            $navItems[] = [ 'label' => 'Dashboard', 'url' => ['/dashboard'] ];
+        }
+
+        $profileImage = '/uploads/avatars/';
+        $profileImage .= ( ! empty( Yii::$app->user->identity->profile_image ) ) ? Yii::$app->user->identity->profile_image : 'placeholder.png'; 
+
+        $navItems[] = [
+            'label' => '<span><img src="' . BaseUrl::base().$profileImage . '" class="navbar-profile-image" /></span>',
+            'items' => [
+                '<p class="navbar-profile-user">' . Yii::$app->user->identity->full_name . '</p>',
+                ( Yii::$app->user->identity->role == 1 ) ? ['label' => 'Dashboard', 'url' => ['/dashboard']] : '',
+                ['label' => 'Profile', 'url' => ['/users/profile'] ],
+                Html::beginForm(['/site/logout'])
+                . Html::submitButton(
+                    'Logout',
+                    ['class' => 'dropdown-item']
+                )
+                . Html::endForm()
+            ],
+            'encode' => false,
+            'options' => [ 'class' => 'ms-md-auto' ]
+        ];
+        
+    }else {                
+        $navItems[] = [ 'label' => 'Login', 'url' => [ '/login' ], 'options' => [ 'class' => 'ms-md-auto' ] ];
+        $navItems[] = [ 'label' => 'Register', 'url' => [ '/register' ],  ];
+    }
+
+
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/site/login']]
-                : '<li class="nav-item">'
-                    . Html::beginForm(['/site/logout'])
-                    . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->username . ')',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>'
-        ]
+        'options' => ['class' => 'navbar-nav w-100 align-items-center'],
+        'items' => $navItems
+
     ]);
     NavBar::end();
     ?>
 </header>
 
-<main id="main" class="flex-shrink-0" role="main">
+<main id="main" class="flex-shrink-0 mt-5" role="main">
     <div class="container">
         <?php if (!empty($this->params['breadcrumbs'])): ?>
             <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
         <?php endif ?>
-        <?= Alert::widget() ?>
+        <?php Alert::widget() ?>
         <?= $content ?>
     </div>
 </main>
