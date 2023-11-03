@@ -99,6 +99,17 @@ use yii\helpers\BaseUrl;
     <div class="col-4">
         
         <div class="row">
+            <?php if( Yii::$app->user->identity->role == 1 ) :  ?>
+            <div class="col-12">
+            <?= $form->field( $property, 'status' )->dropdownList([
+                        '0' => 'Pending', 
+                        '1' => 'Published', 
+                    ],
+                    ['prompt'=>'Select Status']
+                    );
+                ?>
+            </div>
+            <?php endif; ?>
             <div class="col-12">
                 <?= $form->field( $property, 'property_images[]' )->fileInput( ['multiple' => true, 'accept' => 'image/*'] ); ?>
 

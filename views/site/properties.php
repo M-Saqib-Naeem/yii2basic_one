@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\BaseUrl;
+use yii\widgets\LinkPager;
 ?>
 
 <div class="row">
@@ -30,5 +31,27 @@ use yii\helpers\BaseUrl;
 
             </div>
             <?php endforeach; ?>
+
+
+            <nav class="Page navigation example">
+
+                <?php
+                echo LinkPager::widget([
+                    'pagination' => $pagination,
+                    // 'pageCssClass' => 'page-item',
+                    'linkContainerOptions' => [
+                        'class' => 'page-item'
+                    ],
+                    'linkOptions' => [
+                        'class' => 'page-link'
+                    ],
+                    'disabledPageCssClass' => 'page-item',
+                    'disabledListItemSubTagOptions' => [
+                        'class' => 'page-link'
+                    ]
+                ]);
+                ?>
+
+            </nav>
         <?php endif; ?>
 </div>

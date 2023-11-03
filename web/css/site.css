@@ -111,7 +111,7 @@ a.desc:after {
 .property-detail-images-group {
   border: 1px solid gray;
   border-radius: 8px;
-  padding: 8px;
+  padding-block: 15px;
 }
 .property-detail-images-group img {
   border: 3px solid #ededed;

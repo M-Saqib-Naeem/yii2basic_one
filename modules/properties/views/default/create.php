@@ -11,10 +11,16 @@ use yii\bootstrap5\Alert;
         <?php 
             if( Yii::$app->session->hasFlash('success') ):
                 echo Alert::widget([
-                'options' => ['class' => 'alert-success'],
-                'body' => Yii::$app->session->getFlash('success'),
-            ]);
-        endif;
+                    'options' => ['class' => 'alert-success'],
+                    'body' => Yii::$app->session->getFlash('success'),
+                ]);
+            endif;
+            if( Yii::$app->session->hasFlash('error') ):
+                echo Alert::widget([
+                    'options' => ['class' => 'alert-danger'],
+                    'body' => Yii::$app->session->getFlash('error'),
+                ]);
+            endif;
         ?>
         <div class=" mb-5">
             <h1>Create a new property </h1>

@@ -80,6 +80,11 @@ class DefaultController extends Controller
             }
 
 
+            if( Yii::$app->user->identity->role == 1 ){
+                $property->status = 1; // 1 = published, 0 = pending
+            }else{
+                $property->status = 0;
+            }
             $property->save();
 
             Yii::$app->session->setFlash( 'success', 'Your property has been added successfully.' );
@@ -123,7 +128,7 @@ class DefaultController extends Controller
                     'button_title' => $this->btnTitle['create'],
                 ]);
             }
-
+        
             $property_images = [];
             if( is_array( $property->property_images_val ) ) {
                 foreach( $property->property_images_val as $each ) {
@@ -131,6 +136,7 @@ class DefaultController extends Controller
                 }
                 $property->property_images = serialize( $property_images );
             }
+            
 
             $property->save();
 

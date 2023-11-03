@@ -11,7 +11,7 @@
                     <th>User ID</th>
                     <th>User Name</th>
                     <th>User Email Address</th>
-                    <th>Gender & Gender</th>
+                    <th>Gender & Age</th>
                     <th>Action</th>
                 </tr>
                 <?php 
@@ -25,7 +25,7 @@
                         </td>
                         <td><?= $user->email_address; ?></td>
                         <td>
-                            <?= ( $user->gender ) ? $user->gender : "N/A"; ?> | 
+                            <?= ( ! $user->gender ) ? "NA" : ( $user->gender == 1 ? "Male" : "Female" ); ?> | 
                             <?= ( $user->age ) ? $user->age : "N/A"; ?>
                         </td>
                         <td>

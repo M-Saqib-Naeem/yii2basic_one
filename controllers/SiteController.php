@@ -9,7 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-
+use yii\data\Pagination;
 use app\modules\properties\models\Property;
 
 class SiteController extends Controller
@@ -146,10 +146,13 @@ class SiteController extends Controller
 
     public function actionProperties()
     {
-        $properties = Property::find()->all();
+
+        $pagination_helper = $this->pagination_helper();
      
         return $this->render( 'properties', [
-            'properties' => $properties
+            'properties' => $pagination_helper['properties'],
+            'pagination' => $pagination_helper['pagination'],
+            
         ] );
     }
 
@@ -163,5 +166,28 @@ class SiteController extends Controller
         return $this->render( 'property', [
             'property' => $property
         ] );
+    }
+
+
+    
+    /**
+     * Pagination helper function
+     */
+    private function pagination_helper()
+    {
+        $properties = Property::find()
+        ->where(['status' => 1 ]);
+        
+        $count = $properties->count();
+        $pagination = new Pagination(['totalCount' => $count]);
+
+        $properties = $properties->offset($pagination->offset)
+        ->limit($pagination->limit)
+        ->all();
+        return [
+            'properties' =>  $properties,
+            'pagination' => $pagination,
+            'count' => $count
+        ];
     }
 }

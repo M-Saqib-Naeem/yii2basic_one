@@ -5,6 +5,7 @@ namespace app\modules\properties\models;
 use Yii;
 use \yii\db\ActiveRecord;
 use Ramsey\Uuid\Uuid;
+use app\modules\users\models\User;
 
 /**
  * This is the model class for table "{{%users}}".
@@ -42,9 +43,10 @@ class Property extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'type', 'description', 'price' ], 'required'],
-            [['address', 'beds', 'baths', 'area', 'area_type', 'purpose'], 'string', 'min' => 1, 'max' => 255],
-            [['property_images'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 4 ]
+            [['name', 'type', 'description', 'price'], 'required'],
+            [['address', 'beds', 'baths', 'area', 'area_type', 'purpose' ], 'string', 'min' => 1, 'max' => 255],
+            [['property_images'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 4 ],
+            [['status'], 'number'],
         ];
     }
 
@@ -69,6 +71,11 @@ class Property extends ActiveRecord
         } else {
             return false;
         }
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
     
 

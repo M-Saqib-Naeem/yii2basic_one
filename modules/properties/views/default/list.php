@@ -30,6 +30,8 @@ use yii\bootstrap5\Html;
                     <th>Address</th>
                     <th>Area & Size</th>
                     <th>Price</th>
+                    <?php if( Yii::$app->user->identity->role == 1 ): ?><th>Created By</th><?php endif; ?>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
 
@@ -52,6 +54,8 @@ use yii\bootstrap5\Html;
                             <?= $property->area_type; ?>
                         </td>
                         <td><?= $property->price; ?> PKR</td>
+                        <?php  if( Yii::$app->user->identity->role == 1 ): ?><td><?= $property->user->full_name ?> </td><?php endif; ?>
+                        <td><?= (is_null( $property->status )) ? "NA" : (( $property->status == 1 ) ? "Published" : "Pending"); ?></td>
                         <td>
                             <div class="d-flex">
                                 <a href="<?= BaseUrl::base(); ?>/properties/edit?<?= http_build_query([ 'id' => $property->property_id ]) ?>" class="d-inline-block p-2 mr-2">
@@ -74,7 +78,7 @@ use yii\bootstrap5\Html;
                 else:
                 ?>
                 <tr>
-                    <td colspan="5" class="text-center">No records found!</td>
+                    <td colspan="8" class="text-center">No records found!</td>
                 </tr>
                 <?php endif; ?>
             </table>

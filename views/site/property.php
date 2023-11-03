@@ -16,12 +16,12 @@ use yii\helpers\BaseUrl;
                             $property_images = array_reverse( $property_images );
                             $first_elem = array_pop( $property_images );
                         ?>
-                        <img src="<?= BaseUrl::base()."/".$property->dir."/".$first_elem; ?>" class="property-detail-img card-img-top" alt="...">
+                        <img src="<?= BaseUrl::base()."/".$property->dir."/".$first_elem; ?>" class="property-detail-img card-img-top">
 
                         <div class="d-flex gap-2 flex-column property-detail-imgs">
                             
                             <?php foreach( $property_images as $image ): ?> 
-                                <img src="<?= BaseUrl::base()."/".$property->dir."/".$image; ?>" class="card-img-top" alt="...">
+                                <img src="<?= BaseUrl::base()."/".$property->dir."/".$image; ?>" class="card-img-top">
                             <?php endforeach; ?>
 
                         </div>
@@ -34,6 +34,19 @@ use yii\helpers\BaseUrl;
                         <div class="row">
                     <?php foreach( $property_images as $image ): ?> 
                         <div class="col-6">
+                            <img src="<?= BaseUrl::base()."/".$property->dir."/".$image; ?>" class="card-img-top" style="height: 400px;">
+                        </div>
+                    <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                <?php endif; ?>
+
+                <?php if( $images_count === 1 ): ?>
+                    <div class="container">
+                        <div class="row">
+                    <?php foreach( $property_images as $image ): ?> 
+                        <div class="col-12">
                             <img src="<?= BaseUrl::base()."/".$property->dir."/".$image; ?>" class="card-img-top" style="height: 400px;" alt="...">
                         </div>
                     <?php endforeach; ?>
@@ -43,7 +56,7 @@ use yii\helpers\BaseUrl;
                 <?php endif; ?>
 
             <?php }else{ ?>
-                <img src="<?= BaseUrl::base()."/".$property->dir."/placeholder.png"; ?>" class="property-detail-img card-img-top" alt="...">
+                <img src="<?= BaseUrl::base()."/".$property->dir."/placeholder.png"; ?>" class="property-detail-img card-img-top">
             <?php } ?>
         </div>
 
