@@ -23,7 +23,9 @@ use yii\widgets\LinkPager;
 
                     <div class="card-body">
                         <h5 class="card-title"><?= $property->name ?></h5>
-                        <p class="card-text"><?=$property->description ?></p>
+                        <p class="card-text mb-0"><b>Bedrooms: </b><?=$property->beds ?></p>
+                        <p class="card-text mb-0"><b>Bathrooms: </b><?=$property->baths ?></p>
+                        <p class="card-text"><b>Area: </b><?=$property->area ?> <?=$property->area_type ?></p>
                         <a href="<?= BaseUrl::base()."/site/property/?".http_build_query(['id' => $property->id]); ?>" class="btn btn-success btn-sm">View Details</a>
                     </div>
 
