@@ -1,3 +1,4 @@
+
 # phpstorm project files
 .idea
 
@@ -34,8 +35,6 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
-
-# Environment variables
 .env
 
 # Information

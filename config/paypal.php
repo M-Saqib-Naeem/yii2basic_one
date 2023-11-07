@@ -5,12 +5,12 @@ return [
     'sandbox' => [
         'client_id'         => $_ENV['PAYPAL_SANDBOX_CLIENT_ID'],
         'client_secret'     => $_ENV['PAYPAL_SANDBOX_CLIENT_SECRET'],
-        'app_id'            => $_ENV['PAYPAL_SANDBOX_APP_ID'],
+        // 'app_id'            => $_ENV['PAYPAL_SANDBOX_APP_ID'],
     ],
     'live' => [
         'client_id'         => $_ENV['PAYPAL_LIVE_CLIENT_ID'],
         'client_secret'     => $_ENV['PAYPAL_LIVE_CLIENT_SECRET'],
-        'app_id'            => $_ENV['PAYPAL_LIVE_APP_ID'],
+        // 'app_id'            => $_ENV['PAYPAL_LIVE_APP_ID'],
     ],
 
     'payment_action' => $_ENV['PAYPAL_PAYMENT_ACTION'], // Can only be 'Sale', 'Authorization' or 'Order'
